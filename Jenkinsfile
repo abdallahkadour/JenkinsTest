@@ -1,7 +1,7 @@
 pipeline {
     agent any
      tools {
-        nodejs 'NodeJS_22' // Name from Global Tool Configuration
+        nodejs 'NodeJS' // Name from Global Tool Configuration
     }
 
     environment {
