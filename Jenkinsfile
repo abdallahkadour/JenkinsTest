@@ -7,7 +7,7 @@ pipeline {
     environment {
         ANDROID_HOME = '/opt/android-sdk'
         // FIX 1: Added JAVA_HOME to provide a known-good toolchain path for Gradle
-        JAVA_HOME = "/usr/lib/jvm/java-17-openjdk-amd64" 
+        JAVA_HOME = "/usr/lib/jvm/java-17-openjdk" 
         
         // FIX: Explicit PATH setup to ensure all tools (npm, gradlew) are found by the Jenkins shell.
         // MODIFIED: Added ${JAVA_HOME}/bin to the start of the PATH
