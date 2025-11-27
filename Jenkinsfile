@@ -11,12 +11,12 @@ pipeline {
         stage('Clean & Install React Native Packages') {
             steps {
                 sh 'echo $PATH'
-                sh 'which npm'
+                sh 'which /usr/bin/npm install'
 
                 echo ' Cleaning old node_modules and lock files...'
                 sh 'rm -rf node_modules/ package-lock.json yarn.lock'
                 echo ' Installing npm packages...'
-                sh 'npm install'
+                sh '/usr/bin/npm install'
             }
         }
 
