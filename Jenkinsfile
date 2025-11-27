@@ -26,7 +26,7 @@ pipeline {
                 
                 echo ' Installing npm packages using absolute path...'
                 // CRITICAL FIX: Absolute path (/usr/bin/npm) bypasses the environment variable lookup failure.
-                sh '/usr/bin/npm install' 
+                sh '/usr/local/bin/npm install'
             }
         }
 
