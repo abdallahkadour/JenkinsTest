@@ -3,20 +3,28 @@ pipeline {
 
     environment {
         ANDROID_HOME = '/opt/android-sdk'
-        PATH = "$PATH:$ANDROID_HOME/platform-tools:$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
+        // FIX: Explicit PATH setup to ensure all tools (npm, gradlew) are found by the Jenkins shell.
+        PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/cmdline-tools/latest/bin:${env.PATH}"
         NODE_OPTIONS = '--max_old_space_size=4096'
     }
 
     stages {
+        stage('Checkout SCM') {
+            steps {
+                echo "Cloning the source repository..."
+                // MANDATORY: Clones your specific GitHub repository.
+                git 'https://github.com/abdallahkadour/ReactNativeTest'
+            }
+        }
+
         stage('Clean & Install React Native Packages') {
             steps {
-                sh 'echo $PATH'
-                sh 'which npm'
-
                 echo ' Cleaning old node_modules and lock files...'
                 sh 'rm -rf node_modules/ package-lock.json yarn.lock'
-                echo ' Installing npm packages...'
-                sh 'npm install'
+                
+                echo ' Installing npm packages using absolute path...'
+                // CRITICAL FIX: Absolute path (/usr/bin/npm) bypasses the environment variable lookup failure.
+                sh '/usr/bin/npm install' 
             }
         }
 
@@ -24,6 +32,7 @@ pipeline {
             steps {
                 echo ' Cleaning Android build...'
                 sh 'cd android && ./gradlew clean'
+                
                 echo ' Building release APK...'
                 sh 'cd android && ./gradlew assembleRelease'
             }
@@ -36,11 +45,19 @@ pipeline {
                 echo ' APK archived successfully!'
             }
         }
+
+        stage('Upload to Nexus') {
+            steps {
+                echo "Uploading APK to Nexus Repository..."
+                // Final step: Deploy the artifact to Nexus.
+                sh 'curl -u admin:admin123 --upload-file android/app/build/outputs/apk/release/app-release.apk http://nexus.local/repository/apk-hosted/app-release.apk'
+            }
+        }
     }
 
     post {
         success {
-            echo ' Android build completed successfully!'
+            echo ' Android build and deployment completed successfully!'
         }
         failure {
             echo 'Error: Android build failed!'
