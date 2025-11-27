@@ -1,8 +1,8 @@
 pipeline {
     agent any
-     tools {
+    tools {
         nodejs 'NodeJS'
-        jdk "Java17" // Name from Global Tool Configuration
+        jdk 'Java17' // Name from Global Tool Configuration
     }
 
     environment {
@@ -13,7 +13,21 @@ pipeline {
     }
 
     stages {
-   
+        stage('Check Java Version') {
+            steps {
+                sh 'java -version'
+                sh 'javac -version'
+            }
+            stage('Check Gradle Version') {
+                steps {
+                    sh '''
+            cd android
+            ./gradlew --version
+        '''
+                }
+            }
+        }
+
         stage('Checkout SCM') {
             steps {
                 echo 'Cloning the source repository...'
