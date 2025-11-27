@@ -43,7 +43,7 @@ pipeline {
         stage('Build Android APK') {
             steps {
                 echo ' Cleaning Android build...'
-                sh 'cd android && ./gradlew clean'
+                sh 'cd android &&  chmod +x ./gradlew  &&  ./gradlew clean'
 
                 echo ' Building release APK...'
                 sh 'cd android && chmod +x ./gradlew && ./gradlew assembleRelease'
