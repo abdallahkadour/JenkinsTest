@@ -46,7 +46,7 @@ pipeline {
                 sh 'cd android && ./gradlew clean'
 
                 echo ' Building release APK...'
-                sh 'cd android && ./gradlew assembleRelease'
+                sh 'cd android && chmod +x ./gradlew && ./gradlew assembleRelease'
             }
         }
 
