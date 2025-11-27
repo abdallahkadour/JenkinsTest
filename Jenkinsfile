@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'NodeJS_22'
+    }
+
     environment {
         ANDROID_HOME = '/opt/android-sdk'
         // FIX: Explicit PATH setup to ensure all tools (npm, gradlew) are found by the Jenkins shell.
@@ -9,11 +13,18 @@ pipeline {
     }
 
     stages {
+        stage('Install dependencies') {
+            steps {
+                sh 'node -v'
+                sh 'npm -v'
+                sh 'npm install'
+            }
+        }
         stage('Checkout SCM') {
             steps {
-                echo "Cloning the source repository..."
-               
-                git branch: 'main', 
+                echo 'Cloning the source repository...'
+
+                git branch: 'main',
                     credentialsId: '36dc8b7d-7ec1-46c3-a1ac-243b32ffa1e6', // This ID was in your previous log
                     url: 'https://github.com/abdallahkadour/ReactNativeTest'
             }
@@ -23,10 +34,10 @@ pipeline {
             steps {
                 echo ' Cleaning old node_modules and lock files...'
                 sh 'rm -rf node_modules/ package-lock.json yarn.lock'
-                
+
                 echo ' Installing npm packages using absolute path...'
                 // CRITICAL FIX: Absolute path (/usr/bin/npm) bypasses the environment variable lookup failure.
-                sh 'npm install' 
+                sh 'npm install'
             }
         }
 
@@ -34,7 +45,7 @@ pipeline {
             steps {
                 echo ' Cleaning Android build...'
                 sh 'cd android && ./gradlew clean'
-                
+
                 echo ' Building release APK...'
                 sh 'cd android && ./gradlew assembleRelease'
             }
@@ -48,13 +59,13 @@ pipeline {
             }
         }
 
-        // stage('Upload to Nexus') {
-        //     steps {
-        //         echo "Uploading APK to Nexus Repository..."
-        //         // Final step: Deploy the artifact to Nexus.
-        //         sh 'curl -u admin:admin123 --upload-file android/app/build/outputs/apk/release/app-release.apk http://nexus.local/repository/apk-hosted/app-release.apk'
-        //     }
-        // }
+    // stage('Upload to Nexus') {
+    //     steps {
+    //         echo "Uploading APK to Nexus Repository..."
+    //         // Final step: Deploy the artifact to Nexus.
+    //         sh 'curl -u admin:admin123 --upload-file android/app/build/outputs/apk/release/app-release.apk http://nexus.local/repository/apk-hosted/app-release.apk'
+    //     }
+    // }
     }
 
     post {
