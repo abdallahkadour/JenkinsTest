@@ -105,6 +105,18 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    
+    // --- FIX: Explicitly set Java/Kotlin compatibility for modern RN builds ---
+    // This ensures the Kotlin compiler uses the correct environment settings 
+    // to resolve Android SDK classes, preventing the 'Unresolved reference' error.
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }
 
 dependencies {
