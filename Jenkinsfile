@@ -6,9 +6,9 @@ pipeline {
     }
 
     environment {
+        JAVA_HOME = '/opt/jdk17'
         ANDROID_HOME = '/opt/android-sdk'
-        // FIX: Explicit PATH setup to ensure all tools (npm, gradlew) are found by the Jenkins shell.
-        PATH = "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/cmdline-tools/latest/bin:${env.PATH}"
+        PATH = "${JAVA_HOME}/bin:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/cmdline-tools/latest/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
         NODE_OPTIONS = '--max_old_space_size=4096'
     }
 
@@ -35,15 +35,11 @@ pipeline {
                     url: 'https://github.com/abdallahkadour/ReactNativeTest'
             }
         }
-       stage('Clean node modules') {
+
+        stage('Install dependencies') {
             steps {
                 echo 'Clean node modules...'
                 sh 'rm -rf node_modules'
-                sh 'npm install'
-            }
-                }
-        stage('Install dependencies') {
-            steps {
                 sh 'node -v'
                 sh 'npm -v'
                 sh 'npm install'
