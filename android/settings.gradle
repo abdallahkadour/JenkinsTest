@@ -1,13 +1,26 @@
-pluginManagement { includeBuild("../node_modules/@react-native/gradle-plugin")
-  resolutionStrategy {
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    resolutionStrategy {
         eachPlugin {
             if (requested.id.namespace == 'com.facebook.react') {
-                useModule('com.facebook.react:react-native-gradle-plugin')
+                useModule('com.facebook.react:react-native-gradle-plugin:0.82.1') // Specify the version
             }
         }
-    } }
-plugins { id("com.facebook.react.settings") }
-extensions.configure(com.facebook.react.ReactSettingsExtension){ ex -> ex.autolinkLibrariesFromCommand() }
+    }
+}
+
+plugins {
+    id("com.facebook.react.settings")
+}
+
+extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
+    ex.autolinkLibrariesFromCommand()
+}
+
 rootProject.name = 'JenkinsTest'
 include ':app'
 includeBuild('../node_modules/@react-native/gradle-plugin')
