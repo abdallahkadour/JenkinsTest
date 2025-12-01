@@ -52,7 +52,7 @@ pipeline {
                 echo 'Building release APK with Java 17...'
                // # sh 'cd android && chmod +x ./gradlew && ./gradlew assembleRelease -Dorg.gradle.java.home=/opt/jdk17'
             
-                sh 'cd android && chmod +x ./gradlew && ./gradlew assembleRelease'
+                sh 'cd android && chmod +x ./gradlew && ./gradlew assembleRelease --stacktrace --info'
             }
         }
 
