@@ -1,8 +1,6 @@
 pipeline {
     agent any
-    tools {
-        nodejs 'NodeJS'
-    }
+
 
     environment {
         JAVA_HOME = '/opt/java/openjdk'
