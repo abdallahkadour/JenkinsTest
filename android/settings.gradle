@@ -1,29 +1,18 @@
-// android/settings.gradle
-
 pluginManagement {
     repositories {
-        // CRITICAL FIX: This is the correct path for the new React Native Gradle Plugin artifact
-        maven {
-            url file("../node_modules/@react-native/gradle-plugin/releases") 
-        }
-
-        // Standard repositories for other plugins
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven { url("$rootDir/../node_modules/react-native/android") }
     }
 }
-// ... rest of the file
-
-plugins {
-    id("com.facebook.react.settings") version "0.82.1"
-}
-
-extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
-    ex.autolinkLibrariesFromCommand()
-}
-
-includeBuild("../node_modules/@react-native/gradle-plugin")
 
 rootProject.name = "JenkinsTest"
+
+// Include the React Native Gradle Plugin as a composite build
+includeBuild("../node_modules/@react-native/gradle-plugin")
+
 include(":app")
+
+// Configure autolinking
+apply from: file("../node_modules/@react-native/gradle-plugin/react.gradle")
