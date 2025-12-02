@@ -1,12 +1,25 @@
-// Include React Native Gradle plugin as a composite build
-includeBuild("../node_modules/@react-native/gradle-plugin")
+// android/settings.gradle (Modern RN 0.82.x Configuration)
 
-// Apply the React Native settings plugin via the plugin id
-apply plugin: "com.facebook.react.settings"
+pluginManagement {
+    // This is where Gradle looks for the plugins themselves (the artifact JARs)
+    repositories {
+        // 1. CRITICAL: Add the local repository for the new official React Native Gradle Plugin
+        maven {
+            url file("../node_modules/@react-native/gradle-plugin/releases") 
+        }
 
-extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
-    ex.autolinkLibrariesFromCommand()
+        // Standard repositories
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
 }
 
-rootProject.name = "JenkinsTest"
-include(":app")
+// 2. CRITICAL: Apply the autolinking script from the correct, new location 
+// This line replaces the old 'native_modules.gradle' reference 
+apply from: file("../node_modules/@react-native/gradle-plugin/settings-plugin/settings.gradle") 
+
+rootProject.name = 'JenkinsTest'
+
+// The application module
+include ':app'
