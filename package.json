@@ -12,7 +12,6 @@
   "dependencies": {
     "react": "18.2.0",
     "react-native": "0.73.3",
-    "@react-native/new-app-screen": "0.73.3",
     "react-native-safe-area-context": "^5.5.2"
   },
   "devDependencies": {
