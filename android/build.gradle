@@ -1,38 +1,37 @@
+// android/build.gradle
+
 buildscript {
     ext {
-        // --- Core Android Build Configuration (RN 0.82.1 Compatible) ---
+        // Your values (perfectly fine for RN 0.82.1)
         buildToolsVersion = "34.0.0"
-        minSdkVersion = 24
+        minSdkVersion     = 24
         compileSdkVersion = 34
-        targetSdkVersion = 34
-        ndkVersion = "27.1.12297006"
+        targetSdkVersion  = 34
+        ndkVersion        = "27.1.12297006"
 
-        agpVersion = "8.4.1" 
-        kotlinVersion = "1.9.24"
+        agpVersion        = "8.4.1"
+        kotlinVersion     = "1.9.24"
     }
     repositories {
         google()
         mavenCentral()
-        gradlePluginPortal()
     }
     dependencies {
-        // --- Core Plugins ---
         classpath("com.android.tools.build:gradle:$agpVersion")
-        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("com.facebook.reactnative:react-native-gradle-plugin")   // correct new coordinates
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
 }
 
-// Root project plugin for RN 0.82
+// This single line is all you need for React Native 0.80+
 apply plugin: "com.facebook.react.rootproject"
 
-// --- Repositories for all subprojects ---
+// ──────────────────────────────────────────────────────────────
+// CRITICAL: DELETE OR EMPTY THE allprojects BLOCK
+// ──────────────────────────────────────────────────────────────
+// Because you set RepositoriesMode.FAIL_ON_PROJECT_REPOS in settings.gradle,
+// Gradle is no longer allowed to see repositories here.
+
 allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        maven { url("$rootDir/../node_modules/react-native/android") }
-        maven { url("$rootDir/../node_modules/jsc-android/dist") }
-        maven { url "https://www.jitpack.io" }
-    }
+    // ←←← LEAVE THIS BLOCK COMPLETELY EMPTY (or delete the whole block)
 }
