@@ -1,22 +1,6 @@
-pluginManagement {
-    repositories {
-        mavenLocal()
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
-}
+rootProject.name = 'JenkinsTest'
 
-plugins {
-    id("com.facebook.react.settings")
-}
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
+applyNativeModulesSettingsGradle(settings)
 
-extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
-    ex.autolinkLibrariesFromCommand()
-}
-
-// ADD THIS: Include the React Native Gradle Plugin as a composite build
-includeBuild("../node_modules/@react-native/gradle-plugin")
-
-rootProject.name = "JenkinsTest"
-include(":app")
+include ':app'
