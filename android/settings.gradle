@@ -1,8 +1,8 @@
 pluginManagement {
     repositories {
-        gradlePluginPortal()
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
 }
 
@@ -11,18 +11,13 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url "$rootDir/../node_modules/react-native/android" // only needed for some old libs
         maven { url 'https://www.jitpack.io' }
     }
 }
 
 rootProject.name = 'JenkinsTest'
-
 include ':app'
-
-// This is the correct modern way – do NOT apply any extra .gradle files
 includeBuild('../node_modules/@react-native/gradle-plugin')
 
-// Auto-linking (new way – replaces the old apply from ... react.gradle)
 apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle")
 applyNativeModulesSettingsGradle(settings)
