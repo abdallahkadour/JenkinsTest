@@ -1,22 +1,30 @@
 pluginManagement {
     repositories {
-        mavenLocal()
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url("$rootDir/../node_modules/react-native/android") }
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "com.facebook.react.settings") {
+                useModule("com.facebook.react:react-native-gradle-plugin:0.82.1")
+            }
+        }
     }
 }
 
 plugins {
-    id("com.facebook.react.settings")
+    id("com.facebook.react.settings") version "0.82.1"
 }
 
 extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
     ex.autolinkLibrariesFromCommand()
 }
 
-// Required for RN 0.82: loads the React Native Gradle plugin
-includeBuild("../node_modules/@react-native/gradle-plugin")
-
+// Include your app
 rootProject.name = "JenkinsTest"
 include(":app")
+
+// Optional: include React Native plugin as composite build
+includeBuild("../node_modules/@react-native/gradle-plugin")
