@@ -93,23 +93,37 @@ pipeline {
     }
 }
 
-    stage('Build Android APK') {
-      steps {
-        echo 'Cleaning Android build and caches...'
-        sh 'cd android && chmod +x ./gradlew && ./gradlew clean cleanBuildCache'
-sh 'cd android && ./gradlew :app:generatePackageList'
-        echo 'Building release APK with Java 17...'
-       
-        // sh '''
-        //             cd android
-        //             chmod +x ./gradlew
-        //             ./gradlew :app:generateAutolinking --quiet || true
-        //         '''
-        //         // Verify the file was created
-        //        // sh 'test -f android/build/generated/autolinking/autolinking.json && echo "autolinking.json generated!" || (echo "autolinking.json STILL missing!" && exit 1)'
-        sh './gradlew assembleRelease --stacktrace --info'
-      }
+stage('Build Android APK') {
+    steps {
+        dir('android') {
+            sh 'chmod +x ./gradlew'
+
+            // THIS IS THE ONLY LINE THAT MATTERS IN RN 0.82+
+            sh './gradlew :app:preBuild --no-daemon'
+
+            // Now the real build works (autolinking.json is created)
+            sh './gradlew assembleDebug --no-daemon'
+        }
     }
+}
+
+//     stage('Build Android APK') {
+//       steps {
+//         echo 'Cleaning Android build and caches...'
+//         sh 'cd android && chmod +x ./gradlew && ./gradlew clean cleanBuildCache'
+// sh 'cd android && ./gradlew :app:generatePackageList'
+//         echo 'Building release APK with Java 17...'
+       
+//         // sh '''
+//         //             cd android
+//         //             chmod +x ./gradlew
+//         //             ./gradlew :app:generateAutolinking --quiet || true
+//         //         '''
+//         //         // Verify the file was created
+//         //        // sh 'test -f android/build/generated/autolinking/autolinking.json && echo "autolinking.json generated!" || (echo "autolinking.json STILL missing!" && exit 1)'
+//         sh './gradlew assembleRelease --stacktrace --info'
+//       }
+//     }
 
     stage('Archive APK') {
       steps {
