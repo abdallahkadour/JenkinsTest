@@ -75,7 +75,7 @@ pipeline {
         sh 'rm -rf node_modules package-lock.json'
 
         echo 'Installing dependencies...'
-        sh 'npm ci --legacy-peer-deps'
+        sh 'npm i --legacy-peer-deps'
 
         echo 'Cleaning React Native caches and regenerating autolink files...'
         // Official CLI clean (no --all needed)
