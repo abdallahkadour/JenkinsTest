@@ -1,20 +1,19 @@
+// android/settings.gradle
+
 pluginManagement {
     repositories {
+        // CRITICAL FIX: This is the correct path for the new React Native Gradle Plugin artifact
+        maven {
+            url file("../node_modules/@react-native/gradle-plugin/releases") 
+        }
+
+        // Standard repositories for other plugins
         gradlePluginPortal()
         google()
         mavenCentral()
-        maven {
-            url("$rootDir/../node_modules/react-native/android")
-        }
-    }
-    resolutionStrategy {
-        eachPlugin {
-            if (requested.id.id == "com.facebook.react.settings") {
-                useModule("com.facebook.react:react-native-gradle-plugin:0.82.1")
-            }
-        }
     }
 }
+// ... rest of the file
 
 plugins {
     id("com.facebook.react.settings") version "0.82.1"
