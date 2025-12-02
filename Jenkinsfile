@@ -90,15 +90,17 @@ pipeline {
         sh 'cd android && chmod +x ./gradlew && ./gradlew clean cleanBuildCache'
 
         echo 'Building release APK with Java 17...'
+        sh 'npx react-native generate-android
+'
         // # sh 'cd android && chmod +x ./gradlew && ./gradlew assembleRelease -Dorg.gradle.java.home=/opt/jdk17'
-        sh '''
-                    cd android
-                    chmod +x ./gradlew
-                    ./gradlew :app:generateAutolinking --quiet || true
-                '''
-                // Verify the file was created
-               // sh 'test -f android/build/generated/autolinking/autolinking.json && echo "autolinking.json generated!" || (echo "autolinking.json STILL missing!" && exit 1)'
-        sh './gradlew assembleRelease --stacktrace --info'
+        // sh '''
+        //             cd android
+        //             chmod +x ./gradlew
+        //             ./gradlew :app:generateAutolinking --quiet || true
+        //         '''
+        //         // Verify the file was created
+        //        // sh 'test -f android/build/generated/autolinking/autolinking.json && echo "autolinking.json generated!" || (echo "autolinking.json STILL missing!" && exit 1)'
+        // sh './gradlew assembleRelease --stacktrace --info'
       }
     }
 
