@@ -79,7 +79,7 @@ pipeline {
         sh 'npm -v'
         sh 'npm install --legacy-peer-deps'
         // generate autolinking
-        sh 'npx react-native config'
+       sh 'npx react-native generate-android' 
        // sh 'npx react-native autolink'
       }
     }
@@ -90,7 +90,6 @@ pipeline {
         sh 'cd android && chmod +x ./gradlew && ./gradlew clean cleanBuildCache'
 
         echo 'Building release APK with Java 17...'
-        sh 'npx react-native generate-android' 
        
         // sh '''
         //             cd android
@@ -99,7 +98,7 @@ pipeline {
         //         '''
         //         // Verify the file was created
         //        // sh 'test -f android/build/generated/autolinking/autolinking.json && echo "autolinking.json generated!" || (echo "autolinking.json STILL missing!" && exit 1)'
-        // sh './gradlew assembleRelease --stacktrace --info'
+        sh './gradlew assembleRelease --stacktrace --info'
       }
     }
 
