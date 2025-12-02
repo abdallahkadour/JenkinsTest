@@ -6,8 +6,8 @@ pluginManagement {
     }
     resolutionStrategy {
         eachPlugin {
-            if (requested.id.namespace == 'com.facebook.react') {
-                useModule('com.facebook.react:react-native-gradle-plugin:0.82.1') // Specify the version
+            if (requested.id.namespace == "com.facebook.react") {
+                useModule("com.facebook.react:react-native-gradle-plugin:0.82.1")
             }
         }
     }
@@ -21,6 +21,5 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
     ex.autolinkLibrariesFromCommand()
 }
 
-rootProject.name = 'JenkinsTest'
-include ':app'
-includeBuild('../node_modules/@react-native/gradle-plugin')
+rootProject.name = "JenkinsTest"
+include(":app")
