@@ -6,49 +6,33 @@ buildscript {
         compileSdkVersion = 34
         targetSdkVersion = 34
         ndkVersion = "27.1.12297006"
-        
-        // Ensure you are using a modern, compatible AGP version
-        // 8.4.1 works well with modern RN and API 36
+
         agpVersion = "8.4.1" 
-        
-        // FIX: Using stable, modern Kotlin version (1.9.24) 
         kotlinVersion = "1.9.24"
     }
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
     }
     dependencies {
-        // --- CRITICAL FIX: Now explicitly using the defined versions ---
-        
-        // 1. Android Gradle Plugin (AGP) - Must have a version
+        // --- Core Plugins ---
         classpath("com.android.tools.build:gradle:$agpVersion")
-        
-        // 2. The new React Native Gradle Plugin 
         classpath("com.facebook.react:react-native-gradle-plugin")
-        
-        // 3. Kotlin Gradle Plugin - Must use the defined version
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
     }
 }
 
+// Root project plugin for RN 0.82
 apply plugin: "com.facebook.react.rootproject"
 
-// --- CRITICAL FIX: Configure repositories for all subprojects ---
-// This is essential for React Native CI builds to locate dependencies 
-// inside the node_modules folder.
+// --- Repositories for all subprojects ---
 allprojects {
     repositories {
-        maven {
-            // All of React Native (JS bundle, Android platforms, etc) is installed from npm package.
-            url("$rootDir/../node_modules/react-native/android")
-        }
-        maven {
-            // Android JSC is installed from npm package.
-            url("$rootDir/../node_modules/jsc-android/dist")
-        }
         google()
         mavenCentral()
-        maven { url 'https://www.jitpack.io' }
+        maven { url("$rootDir/../node_modules/react-native/android") }
+        maven { url("$rootDir/../node_modules/jsc-android/dist") }
+        maven { url "https://www.jitpack.io" }
     }
 }
