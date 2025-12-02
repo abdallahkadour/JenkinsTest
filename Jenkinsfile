@@ -79,7 +79,7 @@ pipeline {
         sh 'npm -v'
         sh 'npm install --legacy-peer-deps'
         // generate autolinking
-       sh 'npx react-native generate-android' 
+      
        // sh 'npx react-native autolink'
       }
     }
@@ -88,7 +88,7 @@ pipeline {
       steps {
         echo 'Cleaning Android build and caches...'
         sh 'cd android && chmod +x ./gradlew && ./gradlew clean cleanBuildCache'
-
+sh 'cd android && ./gradlew :app:generatePackageList'
         echo 'Building release APK with Java 17...'
        
         // sh '''
