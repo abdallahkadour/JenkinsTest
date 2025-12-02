@@ -38,6 +38,8 @@ pipeline {
             steps {
                 echo 'Cleaning and installing Node modules...'
                 sh 'rm -rf node_modules'
+                sh 'rm -f package-lock.json'
+                sh 'npm cache clean --force'
                 sh 'node -v'
                 sh 'npm -v'
                 sh 'npm install'
