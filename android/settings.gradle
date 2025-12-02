@@ -1,25 +1,30 @@
-// android/settings.gradle (Modern RN 0.82.x Configuration)
-
 pluginManagement {
-    // This is where Gradle looks for the plugins themselves (the artifact JARs)
     repositories {
-        // 1. CRITICAL: Add the local repository for the new official React Native Gradle Plugin
-        maven {
-            url file("../node_modules/@react-native/gradle-plugin/releases") 
-        }
-
-        // Standard repositories
+        gradlePluginPortal()
         google()
         mavenCentral()
-        gradlePluginPortal()
+        maven {
+            url("$rootDir/../node_modules/react-native/android")
+        }
+    }
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == "com.facebook.react.settings") {
+                useModule("com.facebook.react:react-native-gradle-plugin:0.82.1")
+            }
+        }
     }
 }
 
-// 2. CRITICAL: Apply the autolinking script from the correct, new location 
-// This line replaces the old 'native_modules.gradle' reference 
-apply from: file("../node_modules/@react-native/gradle-plugin/settings-plugin/settings.gradle") 
+plugins {
+    id("com.facebook.react.settings") version "0.82.1"
+}
 
-rootProject.name = 'JenkinsTest'
+extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
+    ex.autolinkLibrariesFromCommand()
+}
 
-// The application module
-include ':app'
+includeBuild("../node_modules/@react-native/gradle-plugin")
+
+rootProject.name = "JenkinsTest"
+include(":app")
